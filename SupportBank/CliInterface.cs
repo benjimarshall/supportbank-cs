@@ -41,9 +41,13 @@ namespace SupportBank
                     var name = match.Groups[1].ToString();
 
                     if (people.ContainsKey(name))
+                    {
                         Console.WriteLine(people[name].TransactionSummary());
+                    }
                     else
+                    {
                         Console.WriteLine($"Person: {name} wasn't found");
+                    }
                 }
                 else
                 {
