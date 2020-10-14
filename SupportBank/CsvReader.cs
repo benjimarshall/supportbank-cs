@@ -6,10 +6,8 @@ namespace SupportBank
 {
     internal class CsvReader
     {
-        public static Dictionary<string, Person> ReadCsv(string filename)
+        public static void ReadCsv(string filename, Dictionary<string, Person> people)
         {
-            var people = new Dictionary<string, Person>();
-
             using var parser = new TextFieldParser(filename)
             {
                 TextFieldType = FieldType.Delimited,
@@ -38,8 +36,6 @@ namespace SupportBank
                 toPerson.IncreaseBalance(amount);
                 fromPerson.DecreaseBalance(amount);
             }
-
-            return people;
         }
 
         private static Person FindOrAddPerson(string name, Dictionary<string, Person> people)

@@ -6,7 +6,9 @@ namespace SupportBank
     {
         private static void Main(string[] args)
         {
-            var people = CsvReader.ReadCsv(@"..\..\..\data\Transactions2014.csv");
+            var people = new Dictionary<string, Person>();
+
+            CsvReader.ReadCsv(@"..\..\..\data\Transactions2014.csv", people);
 
             var cliInterface = new CliInterface(people);
 
