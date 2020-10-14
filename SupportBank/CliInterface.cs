@@ -6,11 +6,11 @@ namespace SupportBank
 {
     internal class CliInterface
     {
-        private readonly Dictionary<string, Person> _people;
+        private readonly Dictionary<string, Person> people;
 
         public CliInterface(Dictionary<string, Person> people)
         {
-            _people = people;
+            this.people = people;
         }
 
         public void RunUserCommandLoop()
@@ -40,8 +40,8 @@ namespace SupportBank
                     var match = listAccountMatcher.Match(input);
                     var name = match.Groups[1].ToString();
 
-                    if (_people.ContainsKey(name))
-                        Console.WriteLine(_people[name].TransactionSummary());
+                    if (people.ContainsKey(name))
+                        Console.WriteLine(people[name].TransactionSummary());
                     else
                         Console.WriteLine($"Person: {name} wasn't found");
                 }
@@ -52,19 +52,9 @@ namespace SupportBank
             }
         }
 
-        public void PrintBalances()
+        private void PrintBalances()
         {
-            foreach (var person in _people.Values) Console.WriteLine(person.BalanceStatus());
-        }
-
-        public void PrintAccountNames()
-        {
-            foreach (var name in _people.Keys) Console.WriteLine(name);
-        }
-
-        public static string PoundsToString(double amount)
-        {
-            return amount.ToString("£0.00;-£0.00;£0.00");
+            foreach (var person in people.Values) Console.WriteLine(person.BalanceStatus());
         }
     }
 }

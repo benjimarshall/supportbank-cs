@@ -22,15 +22,13 @@ namespace SupportBank
 
         public override string ToString()
         {
-            var result = new StringBuilder();
-            result.Append("Transaction on ")
-                .Append(Date.ToShortDateString())
-                .Append($" of £{CliInterface.PoundsToString(Amount)}")
-                .Append($" from {From.Name}")
-                .Append($" to {To.Name}")
-                .Append($" for {Narrative}");
+            return "Transaction on " + Date.ToShortDateString() + $" of £{PoundsToString(Amount)}" +
+                   $" from {From.Name}" + $" to {To.Name}" + $" for {Narrative}";
+        }
 
-            return result.ToString();
+        private static string PoundsToString(double amount)
+        {
+            return amount.ToString("£0.00;-£0.00;£0.00");
         }
     }
 }

@@ -32,8 +32,6 @@ namespace SupportBank
 
                 var transaction = new Transaction(date, fromPerson, toPerson, narrative, amount);
 
-                Console.WriteLine(transaction);
-
                 toPerson.Transactions.Add(transaction);
                 fromPerson.Transactions.Add(transaction);
 
