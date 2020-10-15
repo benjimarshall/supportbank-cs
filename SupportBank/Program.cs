@@ -7,7 +7,8 @@ namespace SupportBank
 {
     internal class Program
     {
-        public static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        public static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static void Main(string[] args)
         {

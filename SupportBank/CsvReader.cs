@@ -78,7 +78,6 @@ namespace SupportBank
 
             toPerson.IncreaseBalance(amount);
             fromPerson.DecreaseBalance(amount);
-
         }
 
         private static Person FindOrAddPerson(string name, Dictionary<string, Person> people)
