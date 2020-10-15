@@ -6,11 +6,11 @@ namespace SupportBank
 {
     internal class CsvReader
     {
-        private Dictionary<string, Person> People;
+        private Dictionary<string, Person> people;
 
         public CsvReader(Dictionary<string, Person> people)
         {
-            People = people;
+            this.people = people;
         }
 
         public void ReadCsv(string filename)
@@ -60,8 +60,8 @@ namespace SupportBank
                 return;
             }
 
-            var fromPerson = FindOrAddPerson(fields[1], People);
-            var toPerson = FindOrAddPerson(fields[2], People);
+            var fromPerson = FindOrAddPerson(fields[1], people);
+            var toPerson = FindOrAddPerson(fields[2], people);
             var narrative = fields[3];
 
             double amount;
