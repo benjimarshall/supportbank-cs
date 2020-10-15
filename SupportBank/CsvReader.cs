@@ -54,8 +54,8 @@ namespace SupportBank
                 return;
             }
 
-            var fromPerson = FindOrAddPerson(fields[1], people);
-            var toPerson = FindOrAddPerson(fields[2], people);
+            var fromPerson = fields[1];
+            var toPerson = fields[2];
             var narrative = fields[3];
 
             double amount;
@@ -71,22 +71,7 @@ namespace SupportBank
                 return;
             }
 
-            var transaction = new Transaction(date, fromPerson, toPerson, narrative, amount);
-
-            toPerson.Transactions.Add(transaction);
-            fromPerson.Transactions.Add(transaction);
-
-            toPerson.IncreaseBalance(amount);
-            fromPerson.DecreaseBalance(amount);
-        }
-
-        private static Person FindOrAddPerson(string name, Dictionary<string, Person> people)
-        {
-            if (people.ContainsKey(name)) return people[name];
-
-            var newPerson = new Person(name);
-            people.Add(name, newPerson);
-            return newPerson;
+            var transaction = new Transaction(date, fromPerson, toPerson, narrative, amount, people);
         }
     }
 }
