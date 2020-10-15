@@ -16,26 +16,33 @@ namespace SupportBank
 
             while (!parser.EndOfData)
             {
-                var fields = parser.ReadFields();
 
-                // Skip first line
-                if (fields[0] == "Date") continue;
-
-                // Fields are: 0: Date, 1: From, 2: To, 3: Narrative, 4: Amount
-                var date = DateTime.Parse(fields[0]);
-                var fromPerson = FindOrAddPerson(fields[1], people);
-                var toPerson = FindOrAddPerson(fields[2], people);
-                var narrative = fields[3];
-                var amount = double.Parse(fields[4]);
-
-                var transaction = new Transaction(date, fromPerson, toPerson, narrative, amount);
-
-                toPerson.Transactions.Add(transaction);
-                fromPerson.Transactions.Add(transaction);
-
-                toPerson.IncreaseBalance(amount);
-                fromPerson.DecreaseBalance(amount);
+                ProcessTransaction(parser, filename, people);
             }
+        }
+
+        private static void ProcessTransaction(TextFieldParser parser, string filename, Dictionary<string, Person> people)
+        {
+            var fields = parser.ReadFields();
+
+            // Skip first line
+            if (fields[0] == "Date") return;
+
+            // Fields are: 0: Date, 1: From, 2: To, 3: Narrative, 4: Amount
+            var date = DateTime.Parse(fields[0]);
+            var fromPerson = FindOrAddPerson(fields[1], people);
+            var toPerson = FindOrAddPerson(fields[2], people);
+            var narrative = fields[3];
+            var amount = double.Parse(fields[4]);
+
+            var transaction = new Transaction(date, fromPerson, toPerson, narrative, amount);
+
+            toPerson.Transactions.Add(transaction);
+            fromPerson.Transactions.Add(transaction);
+
+            toPerson.IncreaseBalance(amount);
+            fromPerson.DecreaseBalance(amount);
+
         }
 
         private static Person FindOrAddPerson(string name, Dictionary<string, Person> people)
