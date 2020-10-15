@@ -13,9 +13,15 @@ namespace SupportBank
         {
             // Set up logging
             var config = new LoggingConfiguration();
+
             var target = new FileTarget { FileName = @"C:\Work\Logs\SupportBank.log", Layout = @"${longdate} ${level} - ${logger}: ${message}" };
             config.AddTarget("File Logger", target);
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, target));
+
+            var consoleTarget = new ConsoleTarget {Layout = @"${level}: ${message}"};
+            config.AddTarget("Console", consoleTarget);
+            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Error, consoleTarget));
+
             LogManager.Configuration = config;
             var logger = NLog.LogManager.GetCurrentClassLogger();
 
