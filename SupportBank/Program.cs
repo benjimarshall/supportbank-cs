@@ -19,6 +19,8 @@ namespace SupportBank
             CsvReader.ReadCsv(@"..\..\..\data\Transactions2014.csv", people);
             CsvReader.ReadCsv(@"..\..\..\data\DodgyTransactions2015.csv", people);
 
+            JsonReader.ReadJson(@"..\..\..\data\Transactions2013.json", people);
+
             CliInterface.RunUserCommandLoop(people);
 
             Logger.Debug("Finishing normally...");
