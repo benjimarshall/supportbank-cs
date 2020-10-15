@@ -6,7 +6,14 @@ namespace SupportBank
 {
     internal class CsvReader
     {
-        public static void ReadCsv(string filename, Dictionary<string, Person> people)
+        private Dictionary<string, Person> People;
+
+        public CsvReader(Dictionary<string, Person> people)
+        {
+            People = people;
+        }
+
+        public void ReadCsv(string filename)
         {
             Program.Logger.Debug($"Starting to parse {filename}");
             using var parser = new TextFieldParser(filename)
@@ -18,13 +25,13 @@ namespace SupportBank
             while (!parser.EndOfData)
             {
 
-                ProcessTransaction(parser, filename, people);
+                ProcessTransaction(parser, filename);
             }
 
             Program.Logger.Debug($"{filename} parsed successfully");
         }
 
-        private static void ProcessTransaction(TextFieldParser parser, string filename, Dictionary<string, Person> people)
+        private void ProcessTransaction(TextFieldParser parser, string filename)
         {
             var fields = parser.ReadFields();
 
@@ -53,8 +60,8 @@ namespace SupportBank
                 return;
             }
 
-            var fromPerson = FindOrAddPerson(fields[1], people);
-            var toPerson = FindOrAddPerson(fields[2], people);
+            var fromPerson = FindOrAddPerson(fields[1], People);
+            var toPerson = FindOrAddPerson(fields[2], People);
             var narrative = fields[3];
 
             double amount;
