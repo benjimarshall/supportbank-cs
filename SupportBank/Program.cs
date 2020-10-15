@@ -15,13 +15,10 @@ namespace SupportBank
 
             var people = new Dictionary<string, Person>();
 
-            var csvReader = new CsvReader(people);
-            csvReader.ReadCsv(@"..\..\..\data\Transactions2014.csv");
-            csvReader.ReadCsv(@"..\..\..\data\DodgyTransactions2015.csv");
+            CsvReader.ReadCsv(@"..\..\..\data\Transactions2014.csv", people);
+            CsvReader.ReadCsv(@"..\..\..\data\DodgyTransactions2015.csv", people);
 
-            var cliInterface = new CliInterface(people);
-
-            cliInterface.RunUserCommandLoop();
+            CliInterface.RunUserCommandLoop(people);
 
             Logger.Debug("Finishing normally...");
         }

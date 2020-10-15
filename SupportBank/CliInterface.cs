@@ -6,14 +6,7 @@ namespace SupportBank
 {
     internal class CliInterface
     {
-        private readonly Dictionary<string, Person> people;
-
-        public CliInterface(Dictionary<string, Person> people)
-        {
-            this.people = people;
-        }
-
-        public void RunUserCommandLoop()
+        public static void RunUserCommandLoop(Dictionary<string, Person> people)
         {
             var listAccountMatcher = new Regex("List (.*)");
             while (true)
@@ -37,7 +30,7 @@ namespace SupportBank
                 {
                     Program.Logger.Debug("List All");
                     Console.WriteLine("\n");
-                    PrintBalances();
+                    PrintBalances(people);
                 }
                 else if (listAccountMatcher.IsMatch(input))
                 {
@@ -64,7 +57,7 @@ namespace SupportBank
             }
         }
 
-        private void PrintBalances()
+        private static void PrintBalances(Dictionary<string, Person> people)
         {
             foreach (var person in people.Values) Console.WriteLine(person.BalanceStatus());
         }
