@@ -8,6 +8,7 @@ namespace SupportBank
     {
         public static void ReadCsv(string filename, Dictionary<string, Person> people)
         {
+            Program.Logger.Debug($"Starting to parse {filename}");
             using var parser = new TextFieldParser(filename)
             {
                 TextFieldType = FieldType.Delimited,
@@ -19,11 +20,15 @@ namespace SupportBank
 
                 ProcessTransaction(parser, filename, people);
             }
+
+            Program.Logger.Debug($"{filename} parsed successfully");
         }
 
         private static void ProcessTransaction(TextFieldParser parser, string filename, Dictionary<string, Person> people)
         {
             var fields = parser.ReadFields();
+
+            Program.Logger.Debug($"Parsing line {parser.LineNumber}: {string.Join(",", fields)}");
 
             // Skip first line
             if (fields[0] == "Date") return;
