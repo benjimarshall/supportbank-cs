@@ -6,10 +6,9 @@ namespace SupportBank
 {
     internal class CsvReader
     {
-        public static Dictionary<string, Person> ReadCsv(string filename)
+        public static Dictionary<string, Person> ReadCsv(string filename, Dictionary<string, Person> people)
         {
-            var people = new Dictionary<string, Person>();
-
+            Program.Logger.Debug($"Starting to parse {filename}");
             using var parser = new TextFieldParser(filename)
             {
                 TextFieldType = FieldType.Delimited,
@@ -18,28 +17,68 @@ namespace SupportBank
 
             while (!parser.EndOfData)
             {
-                var fields = parser.ReadFields();
-
-                // Skip first line
-                if (fields[0] == "Date") continue;
-
-                // Fields are: 0: Date, 1: From, 2: To, 3: Narrative, 4: Amount
-                var date = DateTime.Parse(fields[0]);
-                var fromPerson = FindOrAddPerson(fields[1], people);
-                var toPerson = FindOrAddPerson(fields[2], people);
-                var narrative = fields[3];
-                var amount = double.Parse(fields[4]);
-
-                var transaction = new Transaction(date, fromPerson, toPerson, narrative, amount);
-
-                toPerson.Transactions.Add(transaction);
-                fromPerson.Transactions.Add(transaction);
-
-                toPerson.IncreaseBalance(amount);
-                fromPerson.DecreaseBalance(amount);
+                ProcessTransaction(parser, filename, people);
             }
 
+            Program.Logger.Debug($"{filename} parsed successfully");
+
             return people;
+        }
+
+        private static void ProcessTransaction(TextFieldParser parser, string filename, Dictionary<String, Person> people)
+        {
+            var fields = parser.ReadFields();
+
+            Program.Logger.Debug($"Parsing line {parser.LineNumber}: {string.Join(",", fields)}");
+
+            // Skip first line
+            if (fields[0] == "Date") return;
+
+            if (fields.Length < 5)
+            {
+                Program.Logger.Error($"Not enough fields for transaction on {parser.LineNumber} of {filename}");
+                return;
+            }
+
+            // Fields are: 0: Date, 1: From, 2: To, 3: Narrative, 4: Amount
+            DateTime date;
+            try
+            {
+                date = DateTime.Parse(fields[0]);
+            }
+            catch (FormatException e)
+            {
+                Program.Logger.Error(
+                    $"Could not parse date \"{fields[0]}\" for transaction on line {parser.LineNumber} in {filename}"
+                );
+                return;
+            }
+
+            var fromPerson = FindOrAddPerson(fields[1], people);
+            var toPerson = FindOrAddPerson(fields[2], people);
+            var narrative = fields[3];
+
+            double amount;
+            try
+            {
+                amount = double.Parse(fields[4]);
+            }
+            catch (FormatException e)
+            {
+                Program.Logger.Error(
+                    $"Could not parse amount \"{fields[4]}\" for transaction on line {parser.LineNumber} in {filename}"
+                );
+                return;
+            }
+
+            var transaction = new Transaction(date, fromPerson, toPerson, narrative, amount);
+
+            toPerson.Transactions.Add(transaction);
+            fromPerson.Transactions.Add(transaction);
+
+            toPerson.IncreaseBalance(amount);
+            fromPerson.DecreaseBalance(amount);
+
         }
 
         private static Person FindOrAddPerson(string name, Dictionary<string, Person> people)

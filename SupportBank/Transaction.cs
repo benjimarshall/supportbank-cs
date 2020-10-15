@@ -22,7 +22,7 @@ namespace SupportBank
 
         public override string ToString()
         {
-            return "Transaction on " + Date.ToShortDateString() + $" of £{PoundsToString(Amount)}" +
+            return "Transaction on " + Date.ToShortDateString() + $" of {PoundsToString(Amount)}" +
                    $" from {From.Name}" + $" to {To.Name}" + $" for {Narrative}";
         }
 
