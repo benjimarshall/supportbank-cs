@@ -12,20 +12,20 @@ namespace SupportBank
         {
             Program.Logger.Debug($"Starting to parse {filename}");
 
-            using (var file = File.OpenText(filename))
-            {
-                var serializer = new JsonSerializer();
-                var transactionList = (List<JsonTransaction>)serializer.Deserialize(file, typeof(List<JsonTransaction>));
+            using var file = File.OpenText(filename);
 
-                transactionList.Select(jsonTransaction => new Transaction(
-                    jsonTransaction.Date,
-                    jsonTransaction.FromAccount,
-                    jsonTransaction.ToAccount,
-                    jsonTransaction.Narrative,
-                    jsonTransaction.Amount,
-                    people
-                )).ToList();
-            }
+            var serializer = new JsonSerializer();
+            var transactionList = (List<JsonTransaction>)serializer.Deserialize(file, typeof(List<JsonTransaction>));
+
+            transactionList.Select(jsonTransaction => new Transaction(
+                jsonTransaction.Date,
+                jsonTransaction.FromAccount,
+                jsonTransaction.ToAccount,
+                jsonTransaction.Narrative,
+                jsonTransaction.Amount,
+                people
+            )).ToList();
+
 
             Program.Logger.Debug($"{filename} parsed successfully");
         }

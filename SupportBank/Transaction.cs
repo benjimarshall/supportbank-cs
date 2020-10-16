@@ -11,8 +11,14 @@ namespace SupportBank
         public readonly string Narrative;
         public readonly Person To;
 
-        public Transaction(DateTime date, string fromStr, string toStr, string narrative, double amount,
-                           Dictionary<string, Person> people)
+        public Transaction(
+            DateTime date,
+            string fromStr,
+            string toStr,
+            string narrative,
+            double amount,
+            Dictionary<string, Person> people
+        )
         {
             Date = date;
             From = FindOrAddPerson(fromStr, people);

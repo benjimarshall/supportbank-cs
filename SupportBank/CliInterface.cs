@@ -77,28 +77,27 @@ namespace SupportBank
         {
             var fileTypeMatcher = new Regex(@".*\.((csv)|(json))");
 
-            if (fileTypeMatcher.IsMatch(filename))
-            {
-                if (fileTypeMatcher.Match(filename).Groups[1].ToString() == "csv")
-                {
-                    Program.Logger.Debug($"Working on CSV: {filename}");
-                    CsvReader.ReadCsv(filename, people);
-                }
-                else if (fileTypeMatcher.Match(filename).Groups[1].ToString() == "json")
-                {
-                    Program.Logger.Debug($"Working on JSON: {filename}");
-                    JsonReader.ReadJson(filename, people);
-                }
-                else
-                {
-                    Program.Logger.Fatal("Major error parsing file name, matched with file extension "
-                                         + fileTypeMatcher.Match(filename).Groups[1].ToString());
-                }
-            }
-            else
+            if (!fileTypeMatcher.IsMatch(filename))
             {
                 Program.Logger.Debug($"Unsupported file type for file: {filename}");
                 Console.WriteLine("Unsupported file type.");
+                return;
+            }
+
+            switch (fileTypeMatcher.Match(filename).Groups[1].ToString())
+            {
+                case "csv":
+                    Program.Logger.Debug($"Working on CSV: {filename}");
+                    CsvReader.ReadCsv(filename, people);
+                    break;
+                case "json":
+                    Program.Logger.Debug($"Working on JSON: {filename}");
+                    JsonReader.ReadJson(filename, people);
+                    break;
+                default:
+                    Program.Logger.Fatal("Major error parsing file name, matched with file extension "
+                                         + fileTypeMatcher.Match(filename).Groups[1].ToString());
+                    break;
             }
         }
     }
