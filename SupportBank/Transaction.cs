@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace SupportBank
 {
@@ -7,15 +6,21 @@ namespace SupportBank
     {
         public readonly double Amount;
         public readonly DateTime Date;
-        public readonly Person From;
+        public readonly string FromAccount;
         public readonly string Narrative;
-        public readonly Person To;
+        public readonly string ToAccount;
 
-        public Transaction(DateTime date, Person from, Person to, string narrative, double amount)
+        public Transaction(
+            DateTime date,
+            string fromAccount,
+            string toAccount,
+            string narrative,
+            double amount
+        )
         {
             Date = date;
-            From = from;
-            To = to;
+            FromAccount = toAccount;
+            ToAccount = fromAccount;
             Narrative = narrative;
             Amount = amount;
         }
@@ -23,7 +28,7 @@ namespace SupportBank
         public override string ToString()
         {
             return "Transaction on " + Date.ToShortDateString() + $" of {PoundsToString(Amount)}" +
-                   $" from {From.Name}" + $" to {To.Name}" + $" for {Narrative}";
+                   $" from {FromAccount}" + $" to {ToAccount}" + $" for {Narrative}";
         }
 
         private static string PoundsToString(double amount)

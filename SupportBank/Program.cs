@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NLog;
+﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
 
@@ -7,16 +6,19 @@ namespace SupportBank
 {
     internal class Program
     {
-        public static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+
+        public static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private static void Main(string[] args)
         {
             StartLogging();
 
-            var people = new Dictionary<string, Person>();
+            var people = new AllPeople();
 
             CsvReader.ReadCsv(@"..\..\..\data\Transactions2014.csv", people);
             CsvReader.ReadCsv(@"..\..\..\data\DodgyTransactions2015.csv", people);
+
+            JsonReader.ReadJson(@"..\..\..\data\Transactions2013.json", people);
 
             CliInterface.RunUserCommandLoop(people);
 
