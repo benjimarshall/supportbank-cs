@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NLog;
+﻿using NLog;
 using NLog.Config;
 using NLog.Targets;
 
@@ -14,7 +13,7 @@ namespace SupportBank
         {
             StartLogging();
 
-            var people = new Dictionary<string, Person>();
+            var people = new AllPeople();
 
             CsvReader.ReadCsv(@"..\..\..\data\Transactions2014.csv", people);
             CsvReader.ReadCsv(@"..\..\..\data\DodgyTransactions2015.csv", people);

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.VisualBasic.FileIO;
 
 namespace SupportBank
 {
     internal class CsvReader
     {
-        public static Dictionary<string, Person> ReadCsv(string filename, Dictionary<string, Person> people)
+        public static AllPeople ReadCsv(string filename, AllPeople people)
         {
             Program.Logger.Debug($"Starting to parse {filename}");
             using var parser = new TextFieldParser(filename)
@@ -17,7 +16,7 @@ namespace SupportBank
 
             while (!parser.EndOfData)
             {
-                ProcessTransaction(parser, filename, people);
+                ProcessCsvTransaction(parser, filename, people);
             }
 
             Program.Logger.Debug($"{filename} parsed successfully");
@@ -25,7 +24,7 @@ namespace SupportBank
             return people;
         }
 
-        private static void ProcessTransaction(TextFieldParser parser, string filename, Dictionary<String, Person> people)
+        private static void ProcessCsvTransaction(TextFieldParser parser, string filename, AllPeople people)
         {
             var fields = parser.ReadFields();
 
@@ -40,7 +39,7 @@ namespace SupportBank
                 return;
             }
 
-            // Fields are: 0: Date, 1: From, 2: To, 3: Narrative, 4: Amount
+            // Fields are: 0: Date, 1: FromAccount, 2: ToAccount, 3: Narrative, 4: Amount
             DateTime date;
             try
             {
@@ -71,7 +70,7 @@ namespace SupportBank
                 return;
             }
 
-            var transaction = new Transaction(date, fromPerson, toPerson, narrative, amount, people);
+            people.AddTransaction(new Transaction(date, fromPerson, toPerson, narrative, amount));
         }
     }
 }

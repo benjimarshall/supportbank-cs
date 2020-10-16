@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace SupportBank
 {
     internal class CliInterface
     {
-        public static void RunUserCommandLoop(Dictionary<string, Person> people)
+        public static void RunUserCommandLoop(AllPeople people)
         {
             var listAccountMatcher = new Regex("List (.*)");
             var inputFileMatcher = new Regex(@"Input File (.*)");
@@ -44,10 +43,10 @@ namespace SupportBank
                     Program.Logger.Debug("List [Account]");
                     var name = listAccountMatch.Groups[1].ToString();
 
-                    if (people.ContainsKey(name))
+                    if (people.ContainsPerson(name))
                     {
                         Program.Logger.Debug($"Listing account {name}");
-                        Console.WriteLine(people[name].TransactionSummary());
+                        Console.WriteLine(people.GetPerson(name).TransactionSummary());
                     }
                     else
                     {
@@ -68,12 +67,15 @@ namespace SupportBank
             }
         }
 
-        private static void PrintBalances(Dictionary<string, Person> people)
+        private static void PrintBalances(AllPeople people)
         {
-            foreach (var person in people.Values) Console.WriteLine(person.BalanceStatus());
+            foreach (var person in people)
+            {
+                Console.WriteLine(person.BalanceStatus());
+            }
         }
 
-        private static void ReadFromFile(string filename, Dictionary<string, Person> people)
+        private static void ReadFromFile(string filename, AllPeople people)
         {
             var fileTypeMatcher = new Regex(@".*\.((csv)|(json))");
 

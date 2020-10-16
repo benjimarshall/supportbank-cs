@@ -1,31 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace SupportBank
 {
     class JsonReader
     {
-        public static void ReadJson(string filename, Dictionary<string, Person> people)
+        public static void ReadJson(string filename, AllPeople people)
         {
             Program.Logger.Debug($"Starting to parse {filename}");
 
             using var file = File.OpenText(filename);
 
             var serializer = new JsonSerializer();
-            var transactionList = (List<JsonTransaction>)serializer.Deserialize(file, typeof(List<JsonTransaction>));
+            var transactionList = (List<Transaction>)serializer.Deserialize(file, typeof(List<Transaction>));
 
-            transactionList.Select(jsonTransaction => new Transaction(
-                jsonTransaction.Date,
-                jsonTransaction.FromAccount,
-                jsonTransaction.ToAccount,
-                jsonTransaction.Narrative,
-                jsonTransaction.Amount,
-                people
-            )).ToList();
-
+            transactionList.ForEach(people.AddTransaction);
 
             Program.Logger.Debug($"{filename} parsed successfully");
         }
