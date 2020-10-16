@@ -97,7 +97,7 @@ namespace SupportBank
                     JsonReader.ReadJson(filename, people);
                     break;
                 case "xml":
-                    Program.Logger.Debug($"Working on : {filename}");
+                    Program.Logger.Debug($"Working on XML: {filename}");
                     XmlReader.ReadXml(filename, people);
                     break;
                 default:
