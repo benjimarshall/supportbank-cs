@@ -6,7 +6,7 @@ namespace SupportBank
 {
     class JsonReader
     {
-        public static void ReadJson(string filename, AllPeople people)
+        public static AllPeople ReadJson(string filename, AllPeople people)
         {
             Program.Logger.Debug($"Starting to parse {filename}");
 
@@ -18,6 +18,8 @@ namespace SupportBank
             transactionList.ForEach(people.AddTransaction);
 
             Program.Logger.Debug($"{filename} parsed successfully");
+
+            return people;
         }
     }
 }
