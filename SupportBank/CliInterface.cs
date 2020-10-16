@@ -77,7 +77,7 @@ namespace SupportBank
 
         private static void ReadFromFile(string filename, AllPeople people)
         {
-            var fileTypeMatcher = new Regex(@".*\.((csv)|(json))");
+            var fileTypeMatcher = new Regex(@".*\.((csv)|(json)|(xml))");
 
             if (!fileTypeMatcher.IsMatch(filename))
             {
@@ -95,6 +95,10 @@ namespace SupportBank
                 case "json":
                     Program.Logger.Debug($"Working on JSON: {filename}");
                     JsonReader.ReadJson(filename, people);
+                    break;
+                case "xml":
+                    Program.Logger.Debug($"Working on : {filename}");
+                    XmlReader.ReadXml(filename, people);
                     break;
                 default:
                     Program.Logger.Fatal("Major error parsing file name, matched with file extension "
