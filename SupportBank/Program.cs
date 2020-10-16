@@ -20,6 +20,8 @@ namespace SupportBank
 
             JsonReader.ReadJson(@"..\..\..\data\Transactions2013.json", people);
 
+            XmlReader.ReadXml(@"..\..\..\data\Transactions2012.xml", people);
+
             CliInterface.RunUserCommandLoop(people);
 
             Logger.Debug("Finishing normally...");
